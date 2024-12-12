@@ -1,12 +1,36 @@
 import "./App.css";
 import img01 from "../src/assets/img01.png";
-
+import black from "../src/assets/black.png";
+import blue from "../src/assets/blue.png";
+import cyan from "../src/assets/cyan.png";
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
+import { useState } from "react";
 function App() {
+  const colorToImagesMap = {
+    "#6576FF": [{ original: img01 }, { original: black }],
+    "#1FCEC9": [{ original: cyan }, { original: black }],
+    "#4B97D3": [{ original: blue }, { original: blue }],
+    "#3B4747": [{ original: black }, { original: cyan }],
+  };
+  const [selectedColor, setSelectedColor] = useState("#6576FF");
+
+  const handleColorClick = (color) => {
+    setSelectedColor(color);
+  };
+
   return (
     <div className="w-[1320px] mx-auto pt-28">
       <div className="grid grid-cols-2 gap-14 items-center">
-        <div className="col-span-1">
-          <img className="w-full rounded-md" src={img01} alt="" />
+        <div className="col-span-1 rounded-lg">
+          <ImageGallery
+            items={colorToImagesMap[selectedColor]}
+            showPlayButton={false}
+            showFullscreenButton={false}
+            thumbnailPosition="bottom"
+            showNav={false}
+          />
+          {/* <img className="w-full rounded-md" src={img01} alt="" /> */}
         </div>
         <div className="col-span-1">
           <h1 className="text-4xl font-bold text-[#364A63]">
@@ -44,10 +68,24 @@ function App() {
           <div className="pt-5">
             <h3 className="text-[#364A63] text-lg font-bold">Brand Color</h3>
             <ul className="pt-1 flex gap-5">
-              <li className="w-4 h-4 rounded-full bg-[#6576FF]"></li>
-              <li className="w-4 h-4 rounded-full bg-[#1FCEC9]"></li>
-              <li className="w-4 h-4 rounded-full bg-[#4B97D3]"></li>
-              <li className="w-4 h-4 rounded-full bg-[#3B4747]"></li>
+              {Object.keys(colorToImagesMap).map((color) => (
+                <li
+                  key={color}
+                  className={`w-5 h-5 rounded-full cursor-pointer flex items-center justify-center`}
+                  onClick={() => handleColorClick(color)}
+                  style={{
+                    boxShadow:
+                      selectedColor === color ? `0 0 0 2px ${color}` : "none",
+                  }}
+                >
+                  <div
+                    className="w-4 h-4 rounded-full"
+                    style={{
+                      backgroundColor: color,
+                    }}
+                  ></div>
+                </li>
+              ))}
             </ul>
           </div>
           {/* size */}
@@ -67,7 +105,7 @@ function App() {
                   <span className="pr-2 text-[#364A63] font-bold group-hover:text-[#6576FF] transition-all duration-300">
                     M
                   </span>
-                  <span className="text-xs">$69</span>
+                  <span className="text-xs">$79</span>
                 </button>
               </li>
               <li className="group">
@@ -75,7 +113,7 @@ function App() {
                   <span className="pr-2 text-[#364A63] font-bold group-hover:text-[#6576FF] transition-all duration-300">
                     L
                   </span>
-                  <span className="text-xs">$69</span>
+                  <span className="text-xs">$89</span>
                 </button>
               </li>
               <li className="group">
@@ -83,7 +121,7 @@ function App() {
                   <span className="pr-2 text-[#364A63] font-bold group-hover:text-[#6576FF] transition-all duration-300">
                     XL
                   </span>
-                  <span className="text-xs">$69</span>
+                  <span className="text-xs">$99</span>
                 </button>
               </li>
             </ul>
